@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Especialidad</title>
+	  <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	<script type='text/javascript' src="../js/jquery-1.7.1.min.js" > </script>
+	<script type='text/javascript'>
+	$(function(){
+		$("#codigo").focusout(function(){ 
+			$.post("../../Controlador/EspecialidadController.php",
+				{'opcion':'consultaxcodigo','codigo':$("#codigo").val()},respuesta1,'json');
+		});
+		
+		$("#guardar").click(function(){ 
+			$.post("../../Controlador/EspecialidadController.php",
+				$("#datos").serialize(),respuesta2);
+			window.location.href = "index.html";
+		});
+	});
+	function getParameterByName(name) {
+		name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+		var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+		results = regex.exec(location.search);
+		return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+	}
+	function cargardatos()
+	{
+		$.post("../../Controlador/EspecialidadController.php",
+				{'opcion':'consultaxcodigo','codigo':getParameterByName('id')},respuesta1,'json');
+	}
+	
+	function respuesta1(arg)
+	{	$("#codigo").val(arg[0].Id);
+		$("#descripcion").val(arg[0].descripcion);
+		$("#fecha").val(arg[0].fecha_creacion);
+		$("#estado").val(arg[0].estado);
+	}
+	
+	function respuesta2(arg)
+	{
+		alert(arg);
+	}
+	window.onload=cargardatos;
+	</script>
+  </head>
+  <body>
+    <h1>Edición de Especialidad</h1>
+<form id="datos">
+<input type="text" class="form-control" name="opcion" value="actualizar" hidden />
+<div class="form-row">
+    <div class="form-group col-md-6">
+	<label for="codigo">Código</label>
+      <input type="text" class="form-control" id="codigo" name="codigo" placeholder="Código">
+    </div>
+</div>
+ <div class="form-row">
+    <div class="form-group col-md-6">
+	<label for="descripcion">Descripción</label>
+      <input type="text" class="form-control" id="descripcion" name="descripcion" placeholder="descripcion">
+    </div>
+</div>
+<div class="form-row">
+    <div class="form-group col-md-6">
+	<label for="fecha">Fecha</label>
+      <input type="date" class="form-control" id="fecha" name="fecha" placeholder="fecha de creación">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+	<label for="estado">Estado</label>
+      <input type="text" class="form-control" id="estado" name="estado" placeholder="estado">
+    </div>
+  </div>
+ 
+  <button type="button" class="btn btn-primary" id="guardar" >Guardar</button>
+</form>
+    </body>
+</html>
